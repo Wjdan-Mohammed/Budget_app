@@ -17,6 +17,7 @@ struct ContentView: View {
         animation: .default)
     private var expenses: FetchedResults<Expense>
     
+    @State var totalExpenses = 0.0
     @State var expenseName = ""
     @State var cost = ""
     @State var position = 0
@@ -48,156 +49,159 @@ struct ContentView: View {
                 VStack (alignment: .leading){
                     List{
                         Section{
-                        ForEach(Array(zip(expenses.indices, expenses)), id: \.0) { i, expense in
-                            HStack{
-                                Button(action: {
-                                    if expense.isIncluded == false { includeExpense(expense, true) }
-                                    else{ includeExpense(expense, false) }
+                            ForEach(Array(zip(expenses.indices, expenses)), id: \.0) { i, expense in
+                                HStack{
+                                    Button(action: {
+                                        if expense.isIncluded == false { includeExpense(expense, true) }
+                                        else{ includeExpense(expense, false) }
+                                        
+                                    }, label: {
+                                        Image(expense.isIncluded ? "checked" : "not-checked").scaledToFill()
+                                        //                                            .padding(.horizontal, 0)
+                                    })
                                     
-                                }, label: { 
-                                    Image(expense.isIncluded ? "checked" : "not-checked").scaledToFill()
-                                    //                                            .padding(.horizontal, 0)
-                                })
-                                
-                                ZStack(alignment: .leading){
-                                    if let name = expense.name{
-                                        if !name.isEmpty{
-                                            Text(expense.name!)
-                                                .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
-                                                .foregroundColor(colorScheme == .dark ? .white : .black)
-                                            
-                                            //                                        .foregroundColor(expense.name == nil ? .gray : (colorScheme == .dark ? .white : .black))
+                                    ZStack(alignment: .leading){
+                                        if let name = expense.name{
+                                            if !name.isEmpty{
+                                                Text(expense.name!)
+                                                    .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
+                                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                                
+                                                //                                        .foregroundColor(expense.name == nil ? .gray : (colorScheme == .dark ? .white : .black))
+                                                    .frame(maxWidth: .infinity)
+                                                    .frame(alignment: .leading)
+                                                    .font(.system(size: 14))
+                                                
+                                                //                                                    .background(Color.blue)
+                                                
+                                            }
+                                            else{
+                                                
+                                                Text("expense name")
+                                                //                                        .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
+                                                    .foregroundColor(.gray)
+                                                    .frame(alignment: .leading)
+                                                    .frame(maxWidth: .infinity)
+                                                    .font(.system(size: 14))
+                                                //                                                    .background(Color.yellow)
+                                                
+                                                
+                                            }
+                                        }
+                                        else{
+                                            Text("expense name")
+                                            //                                    .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
+                                                .foregroundColor(.gray)
                                                 .frame(maxWidth: .infinity)
                                                 .frame(alignment: .leading)
                                                 .font(.system(size: 14))
                                             
-                                            //                                                    .background(Color.blue)
+                                            //                                                .background(Color.red)
+                                            
+                                        }
+                                        
+                                        if position==i {
+                                            
+                                            TextField("Expense Name", text: $expenseName,
+                                                      onEditingChanged: { _ in },
+                                                      onCommit: { self.expensesHolder = newValue; expenceEditProcessGoing = false; onEditEnd() } )
+                                            .textFieldStyle(.roundedBorder)
+                                            .font(.system(size: 14))
+                                            
+                                            .opacity(expenceEditProcessGoing ? 1 : 0)
+                                            //                                    .frame(maxWidth: .infinity)
+                                            .onSubmit {
+                                                
+                                                updateExpenseName(expense, expenseName)
+                                                expenseName = ""
+                                                expenceEditProcessGoing = false; newValue = self.expensesHolder
+                                                
+                                            }
+                                            //                                            .background(Color.orange)
+                                            
+                                        }
+                                    }
+                                    
+                                    .onTapGesture(perform: {
+                                        
+                                        if let name = expense.name { expenseName = name }
+                                        self.cost = String(expense.cost)
+                                        position = i
+                                        expenceEditProcessGoing = true
+                                    })
+                                    Spacer()
+                                    
+                                    ZStack (alignment: .leading){
+                                        
+                                        if expense.cost != 0{
+                                            Text(String(expense.cost) + " SR")
+                                                .opacity(costEditProcessGoing&&position == i ? 0 : 1)
+                                            //                                                .foregroundColor( colorScheme == .dark ? .white : .black )
+                                                .foregroundColor( .gray )
+                                            
+                                                .frame(maxWidth: .infinity)
+                                                .frame(alignment: .leading)
+                                            //                                            .font(.system(size: 10))
+                                                .font(.caption2)
                                             
                                         }
                                         else{
-                                            
-                                            Text("expense name")
-                                            //                                        .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
-                                                .foregroundColor(.gray)
-                                                .frame(alignment: .leading)
+                                            Text("SAR")
+                                                .opacity(costEditProcessGoing&&position == i ? 0 : 1)
+                                                .foregroundColor( .gray )
                                                 .frame(maxWidth: .infinity)
-                                                .font(.system(size: 14))
-                                            //                                                    .background(Color.yellow)
-                                            
-                                            
+                                                .frame(alignment: .trailing)
+                                            //                                            .font(.system(size: 10))
+                                                .font(.caption2)
                                         }
-                                    }
-                                    else{
-                                        Text("expense name")
-                                        //                                    .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
-                                            .foregroundColor(.gray)
-                                            .frame(maxWidth: .infinity)
-                                            .frame(alignment: .leading)
-                                            .font(.system(size: 14))
                                         
-                                        //                                                .background(Color.red)
-                                        
-                                    }
-                                    
-                                    if position==i {
-                                        
-                                        TextField("Expense Name", text: $expenseName,
-                                                  onEditingChanged: { _ in },
-                                                  onCommit: { self.expensesHolder = newValue; expenceEditProcessGoing = false; onEditEnd() } )
-                                        .textFieldStyle(.roundedBorder)
-                                        .font(.system(size: 14))
-                                        
-                                        .opacity(expenceEditProcessGoing ? 1 : 0)
-                                        //                                    .frame(maxWidth: .infinity)
-                                        .onSubmit {
-                                            
-                                            updateExpenseName(expense, expenseName)
-                                            expenseName = ""
-                                            expenceEditProcessGoing = false; newValue = self.expensesHolder
-                                            
-                                        }
-                                        //                                            .background(Color.orange)
-                                        
-                                    }
-                                }
-                                
-                                .onTapGesture(perform: {
-                                    
-                                    if let name = expense.name { expenseName = name }
-                                    self.cost = String(expense.cost)
-                                    position = i
-                                    expenceEditProcessGoing = true
-                                })
-                                Spacer()
-                                
-                                ZStack (alignment: .leading){
-                                    
-                                    if expense.cost != 0{
-                                        Text(String(expense.cost))
-                                            .opacity(costEditProcessGoing&&position == i ? 0 : 1)
-                                        //                                                .foregroundColor( colorScheme == .dark ? .white : .black )
+                                        if position == i {
+                                            TextField("Cost", text: $cost,
+                                                      onEditingChanged: { _ in },
+                                                      onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
+                                            .textFieldStyle(.roundedBorder)
                                             .foregroundColor( .gray )
-                                        
+                                            .opacity(costEditProcessGoing ? 1 : 0)
                                             .frame(maxWidth: .infinity)
-                                            .frame(alignment: .leading)
-                                        //                                            .font(.system(size: 10))
+                                            //                                        .font(.system(size: 10))
                                             .font(.caption2)
-                                        
-                                    }
-                                    else{
-                                        Text("SAR")
-                                            .opacity(costEditProcessGoing&&position == i ? 0 : 1)
-                                            .foregroundColor( .gray )
-                                            .frame(maxWidth: .infinity)
-                                            .frame(alignment: .trailing)
-                                        //                                            .font(.system(size: 10))
-                                            .font(.caption2)
-                                    }
-                                    
-                                    if position == i {
-                                        TextField("Cost", text: $cost,
-                                                  onEditingChanged: { _ in },
-                                                  onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
-                                        .textFieldStyle(.roundedBorder)
-                                        .foregroundColor( .gray )
-                                        .opacity(costEditProcessGoing ? 1 : 0)
-                                        .frame(maxWidth: .infinity)
-                                        //                                        .font(.system(size: 10))
-                                        .font(.caption2)
-                                        
-                                        .onSubmit {
                                             
-                                            updateCost(expense, cost)
-                                            cost = ""
-                                            costEditProcessGoing = false; newValue = self.expensesHolder
-                                            print(expense)
+                                            .onSubmit {
+                                                
+                                                updateCost(expense, cost)
+                                                cost = ""
+                                                costEditProcessGoing = false; newValue = self.expensesHolder
+                                                print(expense)
+                                                self.totalExpenses = expenses.map({$0.cost}).reduce(0, +)
+                                                print(totalExpenses)
+                                                
+                                            }
                                         }
                                     }
-                                }
-                                
-                                .onTapGesture(perform: {
-                                    self.position = i
-                                    costEditProcessGoing = true
                                     
+                                    .onTapGesture(perform: {
+                                        self.position = i
+                                        costEditProcessGoing = true
+                                        
+                                    })
+                                }.frame(alignment: .leading)
+                                
+                                    .listRowBackground(Color("background color"))
+                                
+                            }
+                            .onDelete(perform: deleteItems)
+                            HStack{
+                                Button(action: { addExpense() }, label: {
+                                    Image( "plus sign" ).scaledToFit()
                                 })
-                            }.frame(alignment: .leading)
-                            
-                                .listRowBackground(Color("background color"))
-                            
+                                Text("Add new expense")
+                                    .foregroundColor( .gray )
+                                //                                .font(.system(size: 10))
+                                    .font(.caption2)
+                                //                                .font(.Body)
+                                //                            .foregroundColor(.grey)
+                            }
                         }
-                        .onDelete(perform: deleteItems)
-                        HStack{
-                            Button(action: { addExpense() }, label: {
-                                Image( "plus sign" ).scaledToFit()
-                            })
-                            Text("Add new expense")
-                                .foregroundColor( .gray )
-                            //                                .font(.system(size: 10))
-                                .font(.caption2)
-                            //                                .font(.Body)
-                            //                            .foregroundColor(.grey)
-                        }
-                    }
                     header:{
                         
                     }
@@ -205,30 +209,30 @@ struct ContentView: View {
                         HStack {
                             Text("under")
                                 .font(.caption2)
-                            .foregroundColor(.gray)
+                                .foregroundColor(.gray)
                             Spacer()
-                            Text("total")
+                            Text("Total expenses: " + String(totalExpenses))
                                 .font(.caption2)
-                            .foregroundColor(.gray)
+                                .foregroundColor(.gray)
                         }
-
+                        
                         
                     }
                     .listSectionSeparatorTint(.clear)
                     }
                     .listStyle(.inset)
-//                    .listRowInsets(.none)
+                    //                    .listRowInsets(.none)
                 }
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        EditButton()
-                    }
-                    ToolbarItem {
-                        Button(action: addExpense) {
-                            Label("Add Item", systemImage: "plus")
-                        }
-                    }
-                }
+//                .toolbar {
+//                    ToolbarItem(placement: .navigationBarTrailing) {
+//                        EditButton()
+//                    }
+//                    ToolbarItem {
+//                        Button(action: addExpense) {
+//                            Label("Add Item", systemImage: "plus")
+//                        }
+//                    }
+//                }
                 //                }.padding()
                 //                .background(Color.green)
                 //                    .onAppear {
@@ -244,7 +248,25 @@ struct ContentView: View {
         //MARK: fix nav color
         .background(Color("background color"))
         .accentColor(.clear)
-        
+        .onAppear{
+//            if let arr = expenses.first(where: { $0.isIncluded == true }){
+//                print(arr)
+            print("✅   ")
+            print(expenses)
+            for i in expenses{
+                print(i.name)
+            }
+//                self.totalExpenses = arr.map({$0.cost}).reduce(0, +)
+                
+            }
+            //            var arr = expenses.
+            
+            //            if let xp = arr{
+            //                ForEach(expenses) { expense in
+            //                self.totalExpenses = arr.map({$0.cost}).reduce(0, +)
+            //                }
+            //            }
+//        }
         //        ForEachIndex(expenses) { i, expense in
         //            HStack{
         //                Button(action: {
@@ -472,3 +494,8 @@ struct ForEachIndex<ItemType, ContentView: View>: View {
         }
     }
 }
+
+//
+//extension Expense : Sequence{
+//
+//}
