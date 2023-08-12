@@ -59,7 +59,8 @@ struct ContentView: View {
                                             else{ includeExpense(expense, false) }
                                             
                                         }, label: {
-                                            Image(expense.isIncluded ? "checked" : "not-checked").scaledToFit()
+                                            Image(expense.isIncluded ? "checked" : "not-checked").resizable().frame(width: 26, height: 26, alignment: .center).scaledToFit()
+                                                
                                             //                                            .padding(.horizontal, 0)
                                         })
                                         
@@ -75,7 +76,8 @@ struct ContentView: View {
                                                        
 //                                                        .frame(maxWidth: .infinity)
 //                                                        .frame(alignment: .leading)
-                                                        .font(.system(size: 14))
+                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
+                                                        .padding(.leading, 8)
                                                     
                                                     //                                                    .background(Color.blue)
                                                     
@@ -84,10 +86,11 @@ struct ContentView: View {
                                                     
                                                     Text("expense name")
                                                     //                                        .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
-                                                        .foregroundColor(.gray)
+                                                        .foregroundColor(Color("mainGray"))
 //                                                        .frame(alignment: .leading)
 //                                                        .frame(maxWidth: .infinity)
-                                                        .font(.system(size: 14))
+                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
+                                                        .padding(.leading, 8)
                                                     //                                                    .background(Color.yellow)
                                                     
                                                     
@@ -98,9 +101,10 @@ struct ContentView: View {
                                                 //                                    .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
 //                                                    .frame(maxWidth: .infinity, alignment: .leading)
 //                                                    .frame(alignment: .leading)
-                                                    .foregroundColor(.gray)
+                                                    .foregroundColor(Color("mainGray"))
                                                     
-                                                    .font(.system(size: 14))
+                                                    .font(.custom("PlusJakartaSans-Medium", size:14))
+                                                    .padding(.leading, 8)
                                                 
                                                 //                                                .background(Color.red)
                                                 
@@ -112,7 +116,8 @@ struct ContentView: View {
                                                           onEditingChanged: { _ in },
                                                           onCommit: { self.expensesHolder = newValue; expenceEditProcessGoing = false; onEditEnd() } )
                                                 .textFieldStyle(.roundedBorder)
-                                                .font(.system(size: 14))
+                                                .padding(.leading, 8)
+                                                .font(.custom("PlusJakartaSans-Medium", size:14))
                                                 
                                                 .opacity(expenceEditProcessGoing ? 1 : 0)
                                                 //                                    .frame(maxWidth: .infinity)
@@ -143,21 +148,21 @@ struct ContentView: View {
                                                 Text(String(expense.cost) + " SR")
                                                     .opacity(costEditProcessGoing&&position == i ? 0 : 1)
                                                 //                                                .foregroundColor( colorScheme == .dark ? .white : .black )
-                                                    .foregroundColor( .gray )
+                                                    .foregroundColor(Color("mainGray"))
                                                 
                                                     .frame(maxWidth: .infinity, alignment: .trailing)
                                                 //                                            .font(.system(size: 10))
-                                                    .font(.caption2)
+                                                    .font(.custom("PlusJakartaSans-Medium", size:10))
                                                 
                                             }
                                             else{
                                                 Text("SAR")
                                                     .opacity(costEditProcessGoing&&position == i ? 0 : 1)
-                                                    .foregroundColor( .gray )
+                                                    .foregroundColor(Color("mainGray"))
 //                                                    .frame(maxWidth: .infinity)
 //                                                    .frame(alignment: .trailing)
                                                 //                                            .font(.system(size: 10))
-                                                    .font(.caption2)
+                                                    .font(.custom("PlusJakartaSans-Medium", size:10))
                                             }
                                             
                                             if position == i {
@@ -165,11 +170,11 @@ struct ContentView: View {
                                                           onEditingChanged: { _ in },
                                                           onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
                                                 .textFieldStyle(.roundedBorder)
-                                                .foregroundColor( .gray )
+                                                .foregroundColor(Color("mainGray"))
                                                 .opacity(costEditProcessGoing ? 1 : 0)
 //                                                .frame(maxWidth: .infinity)
                                                 //                                        .font(.system(size: 10))
-                                                .font(.caption2)
+                                                .font(.custom("PlusJakartaSans-Medium", size:10))
                                                 
                                                 .onSubmit {
                                                     
@@ -203,9 +208,10 @@ struct ContentView: View {
                                         Image( "plus sign" ).scaledToFit()
                                     })
                                     Text("Add new expense")
-                                        .foregroundColor( .gray )
+                                        .foregroundColor(Color("mainGray"))
                                     //                                .font(.system(size: 10))
-                                        .font(.caption2)
+                                        .font(.custom("PlusJakartaSans-Medium", size:10))
+                                        .padding(.leading, 8)
                                     //                                .font(.Body)
                                     //                            .foregroundColor(.grey)
                                 }.frame( alignment: .leading)
@@ -219,12 +225,14 @@ struct ContentView: View {
                             HStack {
                                 Text("under")
                                     .font(.caption2)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(Color("mainGray"))
                                 Spacer()
                                 Text("Total expenses: " + String(totalExpenses))
+                                    .font(.custom("PlusJakartaSans-Regular", size:10))
                                     .font(.caption2)
-                                    .foregroundColor(.gray)
+                                    .foregroundColor(Color("mainGray"))
                             }
+                            .padding(.vertical)
 //                            .frame(width: UIScreen.main.bounds.width)
                             
                             
@@ -234,7 +242,9 @@ struct ContentView: View {
                         } label: {
                             HStack {
                                 Text(Date.now, format: .dateTime.day().month().year())
+                                    .font(.custom("PlusJakartaSans-Medium", size:12))
                                     .padding(.leading, UIScreen.main.bounds.width/20)
+                                    .foregroundColor(Color("mainGray"))
                                 Spacer()
                                 Image("upward_Icon")
                             }
@@ -249,6 +259,7 @@ struct ContentView: View {
                         
                         
                     }
+                    .environment(\.defaultMinListRowHeight, 50)
 //                    .listSectionSeparatorTint(.red, edges: .all)
 //                    .frame(width: UIScreen.main.bounds.width)
                     .padding(.trailing)
