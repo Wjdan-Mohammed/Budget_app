@@ -63,6 +63,9 @@
 		70167F5C2A236063009BA6B0 /* MyBudget */ = {
 			isa = PBXGroup;
 			children = (
+				707D263B2A97973700BA5B6C /* Model */,
+				707D263C2A97974B00BA5B6C /* View */,
+				707D263D2A97975B00BA5B6C /* ViewModel */,
 				70EEB8BE2A87FCF100A19DF9 /* Info.plist */,
 				70167F5D2A236063009BA6B0 /* MyBudgetApp.swift */,
 				70167F5F2A236063009BA6B0 /* ContentView.swift */,
@@ -84,6 +87,27 @@
 				70167F642A236064009BA6B0 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		707D263B2A97973700BA5B6C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		707D263C2A97974B00BA5B6C /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		707D263D2A97975B00BA5B6C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
