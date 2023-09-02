@@ -16,18 +16,20 @@ extension Dictionary : RandomAccessCollection{
     
 }
 struct ContentView: View {
+    @StateObject var vm = ExpenseViewModel()
     @Environment(\.managedObjectContext) private var viewContext
     @Environment(\.colorScheme) var colorScheme
     
     @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \Expense.dateAdded, ascending: true)],
-        animation: .default)
+        sortDescriptors: [NSSortDescriptor(keyPath: \Expense.dateAdded, ascending: false)],
+        animation: .easeIn)
     private var expenses: FetchedResults<Expense>
     
     @State var totalExpenses = 0.0
     @State var expenseName = ""
     @State var cost = ""
     @State var position = 0
+    @State var editedMonth = ""
     
     @Binding var expensesHolder : [Expense]
     @State private var newValue = [Expense]()
@@ -73,10 +75,10 @@ struct ContentView: View {
                                             })
                                             
                                             ZStack(alignment: .leading){
-                                                if let name = expense.name{
-                                                    if !name.isEmpty{
+//                                                if let name = expense.name{
+                                                if expense.name != ""{
                                                         Text(expense.name!)
-                                                            .opacity(expenceEditProcessGoing&&position == i ? 0 : 1)
+                                                            .opacity(expenceEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
                                                             .foregroundColor(colorScheme == .dark ? .white : .black)
                                                             .font(.custom("PlusJakartaSans-Medium", size:14))
                                                             .padding(.leading, 8)
@@ -84,21 +86,21 @@ struct ContentView: View {
                                                         
                                                     }
                                                     else{
-                                                        
+
                                                         Text("expense name")
                                                             .foregroundColor(Color("mainGray"))
                                                             .font(.custom("PlusJakartaSans-Medium", size:14))
                                                             .padding(.leading, 8)
                                                     }
-                                                }
-                                                else{
-                                                    Text("expense name")
-                                                        .foregroundColor(Color("mainGray"))
-                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
-                                                        .padding(.leading, 8)
-                                                }
+//                                                }
+//                                                else{
+//                                                    Text("expense name")
+//                                                        .foregroundColor(Color("mainGray"))
+//                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
+//                                                        .padding(.leading, 8)
+//                                                }
                                                 
-                                                if position==i {
+                                                if position==i&&editedMonth == group.key.prettyMonth {
                                                     
                                                     TextField("Expense Name", text: $expenseName,
                                                               onEditingChanged: { _ in },
@@ -124,27 +126,28 @@ struct ContentView: View {
                                                 self.cost = String(expense.cost)
                                                 position = i
                                                 expenceEditProcessGoing = true
+                                                editedMonth = group.key.prettyMonth
                                             })
                                             Spacer()
                                             //
                                             ZStack (alignment: .leading){
                                                 
-                                                if expense.cost != 0{
+//                                                if expense.cost != nil{
                                                     Text(String(expense.cost) + " SR")
-                                                        .opacity(costEditProcessGoing&&position == i ? 0 : 1)
+                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
                                                         .foregroundColor(Color("mainGray"))
                                                         .frame(maxWidth: .infinity, alignment: .trailing)
                                                         .font(.custom("PlusJakartaSans-Medium", size:10))
                                                     
-                                                }
-                                                else{
-                                                    Text("SAR")
-                                                        .opacity(costEditProcessGoing&&position == i ? 0 : 1)
-                                                        .foregroundColor(Color("mainGray"))
-                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
-                                                }
+//                                                }
+//                                                else{
+//                                                    Text("SAR")
+//                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
+//                                                        .foregroundColor(Color("mainGray"))
+//                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
+//                                                }
                                                 
-                                                if position == i {
+                                                if position == i&&editedMonth == group.key.prettyMonth {
                                                     TextField("Cost", text: $cost,
                                                               onEditingChanged: { _ in },
                                                               onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
@@ -164,9 +167,11 @@ struct ContentView: View {
                                             }
                                             //
                                             .onTapGesture(perform: {
+                                                if let name = expense.name { expenseName = name }
+                                                self.cost = String(expense.cost)
                                                 self.position = i
                                                 costEditProcessGoing = true
-                                                
+                                                editedMonth = group.key.prettyMonth
                                             })
                                         }
                                         //                                    .frame(alignment: .leading)
@@ -176,7 +181,13 @@ struct ContentView: View {
                                     //MARK: end of 2nd ForEach
                                     .onDelete(perform: deleteItems)
                                     HStack(alignment: .center){
-                                        Button(action: { addExpense(group.key) }, label: {
+                                        Button(action: {
+                                            
+//                                            position = group.value.endIndex
+                                            addExpense(group.key)
+                                            print(" ☀️ \n",group.value, " ☀️ \n")
+
+                                        }, label: {
                                             Image( "plus sign" ).scaledToFit()
                                         })
                                         Text("Add new expense")
@@ -463,37 +474,40 @@ struct ContentView: View {
     
     
     // check the index or expense id b4 calling this or else it'll add a new expense when u want to update an existing one
-    func addExpense(_ name : String?, _ cost : Double?, _ isIncluded : Bool) {
-        let newTask = Expense(context: viewContext)
-        newTask.id = UUID()
-        newTask.isIncluded = isIncluded
-        if let name = name { newTask.name = name }
-        if let cost = cost { newTask.cost = cost }
-        
-        newTask.dateAdded = Date()
-        do {
-            try viewContext.save()
-        } catch {
-            print("error")
-        }
-    }
+//    func addExpense(_ name : String?, _ cost : Double?, _ isIncluded : Bool) {
+//        let newTask = Expense(context: viewContext)
+//        newTask.id = UUID()
+//        newTask.isIncluded = isIncluded
+//        if let name = name { newTask.name = name }
+//        if let cost = cost { newTask.cost = cost }
+//
+//        newTask.dateAdded = Date()
+//        do {
+//            try viewContext.save()
+//        } catch {
+//            print("error")
+//        }
+//    }
     
     
     
     
-    private func addExpense(_ date : Date) {
+    private func addExpense(_ date : Date = Date()) {
         cost = ""
-        costEditProcessGoing = true
-        expenceEditProcessGoing = true
+        expenseName = ""
+//        costEditProcessGoing = true
+//        expenceEditProcessGoing = true
         
-        position = expenses.endIndex
+//        position = array.endIndex
         withAnimation {
             let newItem = Expense(context: viewContext)
-            
             newItem.id = UUID()
             newItem.dateAdded = date
+//            newItem
             do {
                 try viewContext.save()
+                viewContext.refresh(newItem, mergeChanges: true)
+                
             } catch {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
@@ -505,6 +519,16 @@ struct ContentView: View {
             
         }
     }
+    func fetchTools() {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Expense")
+
+            do {
+                try viewContext.fetch(fetchRequest)
+            } catch let error {
+                print("Error fetching \(error)")
+            }
+
+        }
     
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
@@ -520,6 +544,9 @@ struct ContentView: View {
             }
         }
     }
+    //    func sort(_ arr :[Element])->[Element]{
+    //        return arr.sorted(by: {$0.date > $1.date})
+    //    }
 }
 
 private let itemFormatter: DateFormatter = {
@@ -636,13 +663,17 @@ extension FetchedResults where Element: Dated {
             let components = Calendar.current.dateComponents(dateComponents, from: cur.date)
             let date = Calendar.current.date(from: components)!
             let existing = acc[date] ?? []
+//            existing.sort{>}
             acc[date] = existing + [cur]
         }
-        
         return groupedByDateComponents
     }
+    
+    
 }
-
+extension Array where Element: Dated{
+    
+}
 extension Expense : Dated{
     var date: Date {
         return dateAdded ?? Date()
