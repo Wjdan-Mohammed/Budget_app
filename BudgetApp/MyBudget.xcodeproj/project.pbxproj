@@ -13,6 +13,7 @@
 		70167F652A236064009BA6B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70167F642A236064009BA6B0 /* Preview Assets.xcassets */; };
 		70167F672A236064009BA6B0 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70167F662A236064009BA6B0 /* Persistence.swift */; };
 		70167F6A2A236064009BA6B0 /* MyBudget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 70167F682A236064009BA6B0 /* MyBudget.xcdatamodeld */; };
+		70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */; };
 		70EEB8BF2A8803F500A19DF9 /* PlusJakartaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BD2A87FCA300A19DF9 /* PlusJakartaSans-Bold.ttf */; };
 		70EEB8C12A8803F500A19DF9 /* PlusJakartaSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */; };
 		70EEB8C32A8806B900A19DF9 /* PlusJakartaSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8C22A88069300A19DF9 /* PlusJakartaSans-Medium.ttf */; };
@@ -26,6 +27,7 @@
 		70167F642A236064009BA6B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		70167F662A236064009BA6B0 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		70167F692A236064009BA6B0 /* MyBudget.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyBudget.xcdatamodel; sourceTree = "<group>"; };
+		70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewModel.swift; sourceTree = "<group>"; };
 		70EEB8BB2A87FCA300A19DF9 /* PlusJakartaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Regular.ttf"; sourceTree = "<group>"; };
 		70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		70EEB8BD2A87FCA300A19DF9 /* PlusJakartaSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Bold.ttf"; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		707D263D2A97975B00BA5B6C /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -186,6 +189,7 @@
 				70167F672A236064009BA6B0 /* Persistence.swift in Sources */,
 				70167F602A236063009BA6B0 /* ContentView.swift in Sources */,
 				70167F6A2A236064009BA6B0 /* MyBudget.xcdatamodeld in Sources */,
+				70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */,
 				70167F5E2A236063009BA6B0 /* MyBudgetApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
