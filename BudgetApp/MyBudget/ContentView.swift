@@ -40,7 +40,8 @@ struct ContentView: View {
     { didSet{ newValue = expensesHolder } }
     
     let onEditEnd: () -> Void
-    
+    @State var int = 0
+    @State var exp1 : FetchedResults<Expense>.Element = Expense()
     public init(_ txt: Binding<[Expense]>, onEditEnd: @escaping () -> Void) {
         _expensesHolder = txt
         self.onEditEnd = onEditEnd
@@ -59,199 +60,214 @@ struct ContentView: View {
                 //                ScrollView {
                 VStack (alignment: .leading){
                     List{
-                        
-                        ForEach(expenses.groupedBy(dateComponents: [.month, .year]), id: \.key){ group in
-                            DisclosureGroup {
-                                Section{
-                                    ForEach(Array(zip(group.value.indices, group.value)), id: \.0) { i, expense in
-                                        HStack{
-                                            Button(action: {
-                                                if expense.isIncluded == false { includeExpense(expense, true) }
-                                                else{ includeExpense(expense, false) }
-                                                
-                                            }, label: {
-                                                Image(expense.isIncluded ? "checked" : "not-checked").resizable().frame(width: 26, height: 26, alignment: .center).scaledToFit()
-                                                
-                                            })
-                                            
-                                            ZStack(alignment: .leading){
-//                                                if let name = expense.name{
-                                                if expense.name != ""{
-                                                        Text(expense.name!)
-                                                            .opacity(expenceEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
-                                                            .foregroundColor(colorScheme == .dark ? .white : .black)
-                                                            .font(.custom("PlusJakartaSans-Medium", size:14))
-                                                            .padding(.leading, 8)
-                                                        
-                                                        
-                                                    }
-                                                    else{
-
-                                                        Text("expense name")
-                                                            .foregroundColor(Color("mainGray"))
-                                                            .font(.custom("PlusJakartaSans-Medium", size:14))
-                                                            .padding(.leading, 8)
-                                                    }
-//                                                }
-//                                                else{
-//                                                    Text("expense name")
-//                                                        .foregroundColor(Color("mainGray"))
-//                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
-//                                                        .padding(.leading, 8)
-//                                                }
-                                                
-                                                if position==i&&editedMonth == group.key.prettyMonth {
-                                                    
-                                                    TextField("Expense Name", text: $expenseName,
-                                                              onEditingChanged: { _ in },
-                                                              onCommit: { self.expensesHolder = newValue; expenceEditProcessGoing = false; onEditEnd() } )
-                                                    .textFieldStyle(.roundedBorder)
-                                                    .padding(.leading, 8)
-                                                    .font(.custom("PlusJakartaSans-Medium", size:14))
-                                                    
-                                                    .opacity(expenceEditProcessGoing ? 1 : 0)
-                                                    .onSubmit {
-                                                        
-                                                        updateExpenseName(expense, expenseName)
-                                                        expenseName = ""
-                                                        expenceEditProcessGoing = false; newValue = self.expensesHolder
-                                                        
-                                                    }
-                                                }
-                                            }
-                                            //
-                                            .onTapGesture(perform: {
-                                                
-                                                if let name = expense.name { expenseName = name }
-                                                self.cost = String(expense.cost)
-                                                position = i
-                                                expenceEditProcessGoing = true
-                                                editedMonth = group.key.prettyMonth
-                                            })
-                                            Spacer()
-                                            //
-                                            ZStack (alignment: .leading){
-                                                
-//                                                if expense.cost != nil{
-                                                    Text(String(expense.cost) + " SR")
-                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
-                                                        .foregroundColor(Color("mainGray"))
-                                                        .frame(maxWidth: .infinity, alignment: .trailing)
-                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
-                                                    
-//                                                }
-//                                                else{
-//                                                    Text("SAR")
-//                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
-//                                                        .foregroundColor(Color("mainGray"))
-//                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
-//                                                }
-                                                
-                                                if position == i&&editedMonth == group.key.prettyMonth {
-                                                    TextField("Cost", text: $cost,
-                                                              onEditingChanged: { _ in },
-                                                              onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
-                                                    .textFieldStyle(.roundedBorder)
-                                                    .foregroundColor(Color("mainGray"))
-                                                    .opacity(costEditProcessGoing ? 1 : 0)
-                                                    .font(.custom("PlusJakartaSans-Medium", size:10))
-                                                    .onSubmit {
-                                                        updateCost(expense, cost)
-                                                        cost = ""
-                                                        costEditProcessGoing = false; newValue = self.expensesHolder
-                                                        print(expense)
-                                                        self.totalExpenses = expenses.map({$0.cost}).reduce(0, +)
-                                                        print(totalExpenses)
-                                                    }
-                                                }
-                                            }
-                                            //
-                                            .onTapGesture(perform: {
-                                                if let name = expense.name { expenseName = name }
-                                                self.cost = String(expense.cost)
-                                                self.position = i
-                                                costEditProcessGoing = true
-                                                editedMonth = group.key.prettyMonth
-                                            })
-                                        }
-                                        //                                    .frame(alignment: .leading)
-                                        //                                    .listRowBackground(Color(.clear))
-                                        
-                                    }
-                                    //MARK: end of 2nd ForEach
-                                    .onDelete(perform: deleteItems)
-                                    HStack(alignment: .center){
-                                        Button(action: {
-                                            
-//                                            position = group.value.endIndex
-                                            addExpense(group.key)
-                                            print(" ☀️ \n",group.value, " ☀️ \n")
-
-                                        }, label: {
-                                            Image( "plus sign" ).scaledToFit()
-                                        })
-                                        Text("Add new expense")
-                                            .foregroundColor(Color("mainGray"))
-                                        //                                .font(.system(size: 10))
-                                            .font(.custom("PlusJakartaSans-Medium", size:10))
-                                            .padding(.leading, 8)
-                                        //                                .font(.Body)
-                                        //                            .foregroundColor(.grey)
-                                    }.frame( alignment: .leading)
-                                    //MARK: grouping func
-                                    //                                Button {
-                                    //                                    print("🚀🚀🚀")
-                                    //                                    //                                    print( expenses.groupedBy([.year, .month]))
-                                    //                                    print(expenses.groupedBy(dateComponents: [.year, .month]))
-                                    //                                    //MARK: decending + print/display written month + make it start from same month not last day of the prev month
-                                    //                                    //
-                                    //
-                                    //                                    expenses.groupedBy(dateComponents: [.year, .month]).forEach {
-                                    //                                        print(" 📅 Date: ",$0.key.prettyMonth)
-                                    //                                        $0.value.forEach {
-                                    //                                            print("      👤 ",$0.dateAdded!.prettyMonth)
-                                    //                                        }
-                                    //                                    }
-                                    //
-                                    //                                } label: {
-                                    //                                    Text("print grouped exp")
-                                    //                                }
-                                }
-                            header:{
-                                
-                            }
-                            footer:{
-                                HStack {
-                                    Text("under")
-                                        .font(.caption2)
-                                        .foregroundColor(Color("mainGray"))
-                                    Spacer()
-                                    Text("Total expenses: " + String(totalExpenses))
-                                        .font(.custom("PlusJakartaSans-Regular", size:10))
-                                        .font(.caption2)
-                                        .foregroundColor(Color("mainGray"))
-                                }
-                                .padding(.vertical)
-                                //                            .frame(width: UIScreen.main.bounds.width)
-                                
-                                
-                            }
-                            } label: {
-                                HStack {
-                                    Text(group.key.prettyMonth)
-                                        .font(.custom("PlusJakartaSans-Medium", size:12))
-                                        .padding(.leading, UIScreen.main.bounds.width/20)
-                                        .foregroundColor(Color("mainGray"))
-                                    Spacer()
-                                    Image("upward_Icon")
-                                }
-                                
-                            }
-                            .listRowInsets(EdgeInsets(top: 0, // make the top 0 to remove the spacing
-                                                      leading: 0,
-                                                      bottom: 0,
-                                                      trailing: 0))
+                        ForEach(expenses, id: \.self){ exp in
+                            //                            Text("hi")
+                            Text(exp.name!).onAppear(perform: {
+                                self.exp1 = exp
+                                print(exp.id)
+                            })
+                            
+                            
                         }
+                        Button("add") {
+                            int += 1
+                            updateExpenseName(exp1, String(int))
+                            print(int)
+                        }
+//
+//                        ForEach(expenses.groupedBy(dateComponents: [.month, .year]), id: \.key){ group in
+////                            DisclosureGroup {
+////                                Section{
+//                                    ForEach(Array(zip(group.value.indices, group.value)), id: \.0) { i, expense in
+////                                        HStack{
+////                                            Button(action: {
+////                                                if expense.isIncluded == false { includeExpense(expense, true) }
+////                                                else{ includeExpense(expense, false) }
+////                                                
+////                                            }, label: {
+////                                                Image(expense.isIncluded ? "checked" : "not-checked").resizable().frame(width: 26, height: 26, alignment: .center).scaledToFit()
+////                                                
+////                                            })
+////                                            
+////                                            ZStack(alignment: .leading){
+//////                                                if let name = expense.name{
+////                                                if expense.name != ""{
+////                                                        Text(expense.name!)
+////                                                            .opacity(expenceEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
+////                                                            .foregroundColor(colorScheme == .dark ? .white : .black)
+////                                                            .font(.custom("PlusJakartaSans-Medium", size:14))
+////                                                            .padding(.leading, 8)
+////                                                        
+////                                                        
+////                                                    }
+////                                                    else{
+////
+////                                                        Text("expense name")
+////                                                            .foregroundColor(Color("mainGray"))
+////                                                            .font(.custom("PlusJakartaSans-Medium", size:14))
+////                                                            .padding(.leading, 8)
+////                                                    }
+//////                                                }
+//////                                                else{
+//////                                                    Text("expense name")
+//////                                                        .foregroundColor(Color("mainGray"))
+//////                                                        .font(.custom("PlusJakartaSans-Medium", size:14))
+//////                                                        .padding(.leading, 8)
+//////                                                }
+////                                                
+////                                                if position==i&&editedMonth == group.key.prettyMonth {
+////                                                    
+////                                                    TextField("Expense Name", text: $expenseName,
+////                                                              onEditingChanged: { _ in },
+////                                                              onCommit: { self.expensesHolder = newValue; expenceEditProcessGoing = false; onEditEnd() } )
+////                                                    .textFieldStyle(.roundedBorder)
+////                                                    .padding(.leading, 8)
+////                                                    .font(.custom("PlusJakartaSans-Medium", size:14))
+////                                                    
+////                                                    .opacity(expenceEditProcessGoing ? 1 : 0)
+////                                                    .onSubmit {
+////                                                        
+////                                                        updateExpenseName(expense, expenseName)
+////                                                        expenseName = ""
+////                                                        expenceEditProcessGoing = false; newValue = self.expensesHolder
+////                                                        
+////                                                    }
+////                                                }
+////                                            }
+////                                            //
+////                                            .onTapGesture(perform: {
+////                                                
+////                                                if let name = expense.name { expenseName = name }
+////                                                self.cost = String(expense.cost)
+////                                                position = i
+////                                                expenceEditProcessGoing = true
+////                                                editedMonth = group.key.prettyMonth
+////                                            })
+////                                            Spacer()
+////                                            //
+////                                            ZStack (alignment: .leading){
+////                                                
+//////                                                if expense.cost != nil{
+////                                                    Text(String(expense.cost) + " SR")
+////                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
+////                                                        .foregroundColor(Color("mainGray"))
+////                                                        .frame(maxWidth: .infinity, alignment: .trailing)
+////                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
+////                                                    
+//////                                                }
+//////                                                else{
+//////                                                    Text("SAR")
+//////                                                        .opacity(costEditProcessGoing&&position == i&&editedMonth == group.key.prettyMonth ? 0 : 1)
+//////                                                        .foregroundColor(Color("mainGray"))
+//////                                                        .font(.custom("PlusJakartaSans-Medium", size:10))
+//////                                                }
+////                                                
+////                                                if position == i&&editedMonth == group.key.prettyMonth {
+////                                                    TextField("Cost", text: $cost,
+////                                                              onEditingChanged: { _ in },
+////                                                              onCommit: { self.expensesHolder = newValue; costEditProcessGoing = false; onEditEnd() } )
+////                                                    .textFieldStyle(.roundedBorder)
+////                                                    .foregroundColor(Color("mainGray"))
+////                                                    .opacity(costEditProcessGoing ? 1 : 0)
+////                                                    .font(.custom("PlusJakartaSans-Medium", size:10))
+////                                                    .onSubmit {
+////                                                        updateCost(expense, cost)
+////                                                        cost = ""
+////                                                        costEditProcessGoing = false; newValue = self.expensesHolder
+////                                                        print(expense)
+////                                                        self.totalExpenses = expenses.map({$0.cost}).reduce(0, +)
+////                                                        print(totalExpenses)
+////                                                    }
+////                                                }
+////                                            }
+////                                            //
+////                                            .onTapGesture(perform: {
+////                                                if let name = expense.name { expenseName = name }
+////                                                self.cost = String(expense.cost)
+////                                                self.position = i
+////                                                costEditProcessGoing = true
+////                                                editedMonth = group.key.prettyMonth
+////                                            })
+////                                        }
+//                                        //                                    .frame(alignment: .leading)
+//                                        //                                    .listRowBackground(Color(.clear))
+//                                        
+//                                    }
+//                                    //MARK: end of 2nd ForEach
+//                                    .onDelete(perform: deleteItems)
+//                                    HStack(alignment: .center){
+//                                        Button(action: {
+//                                            
+////                                            position = group.value.endIndex
+//                                            addExpense(group.key)
+//                                            print("🙆🏻‍♀️", expenses, "🙆🏻‍♀️")
+////                                            print(" ☀️ \n",group.value, " ☀️ \n")
+//
+//                                        }, label: {
+//                                            Image( "plus sign" ).scaledToFit()
+//                                        })
+//                                        Text("Add new expense")
+//                                            .foregroundColor(Color("mainGray"))
+//                                        //                                .font(.system(size: 10))
+//                                            .font(.custom("PlusJakartaSans-Medium", size:10))
+//                                            .padding(.leading, 8)
+//                                        //                                .font(.Body)
+//                                        //                            .foregroundColor(.grey)
+//                                    }.frame( alignment: .leading)
+//                                    //MARK : grouping func
+//                                    //                                Button {
+//                                    //                                    print("🚀🚀🚀")
+//                                    //                                    //                                    print( expenses.groupedBy([.year, .month]))
+//                                    //                                    print(expenses.groupedBy(dateComponents: [.year, .month]))
+//                                    //                                    //MARK: decending + print/display written month + make it start from same month not last day of the prev month
+//                                    //                                    //
+//                                    //
+//                                    //                                    expenses.groupedBy(dateComponents: [.year, .month]).forEach {
+//                                    //                                        print(" 📅 Date: ",$0.key.prettyMonth)
+//                                    //                                        $0.value.forEach {
+//                                    //                                            print("      👤 ",$0.dateAdded!.prettyMonth)
+//                                    //                                        }
+//                                    //                                    }
+//                                    //
+//                                    //                                } label: {
+//                                    //                                    Text("print grouped exp")
+//                                    //                                }
+////                                }
+////                            header:{
+////                                
+////                            }
+////                            footer:{
+////                                HStack {
+////                                    Text("under")
+////                                        .font(.caption2)
+////                                        .foregroundColor(Color("mainGray"))
+////                                    Spacer()
+////                                    Text("Total expenses: " + String(totalExpenses))
+////                                        .font(.custom("PlusJakartaSans-Regular", size:10))
+////                                        .font(.caption2)
+////                                        .foregroundColor(Color("mainGray"))
+////                                }
+////                                .padding(.vertical)
+////                                //                            .frame(width: UIScreen.main.bounds.width)
+////                                
+////                                
+////                            }
+////                            } label: {
+////                                HStack {
+////                                    Text(group.key.prettyMonth)
+////                                        .font(.custom("PlusJakartaSans-Medium", size:12))
+////                                        .padding(.leading, UIScreen.main.bounds.width/20)
+////                                        .foregroundColor(Color("mainGray"))
+////                                    Spacer()
+////                                    Image("upward_Icon")
+////                                }
+////                                
+////                            }
+//                            .listRowInsets(EdgeInsets(top: 0, // make the top 0 to remove the spacing
+//                                                      leading: 0,
+//                                                      bottom: 0,
+//                                                      trailing: 0))
+//                        }
                         
                         
                         
@@ -285,24 +301,26 @@ struct ContentView: View {
             }.onAppear(perform: {
                 
                 if expenses.isEmpty {
-                    addExpense(Date())
+//                    addExpense(Date())
                     
+                }else{
+                    print(expenses)
                 }
                 
                 //                addExpense(Date(timeIntervalSince1970: 879869695))
                 self.totalExpenses = expenses.map({$0.cost}).reduce(0, +)
-                print("🎢🎢🎢🎢")
+//                print("🎢🎢🎢🎢")
                 
-                let groupedDict = Dictionary(grouping: expenses, by: { $0.dateAdded?.month })
+//                let groupedDict = Dictionary(grouping: expenses, by: { $0.dateAdded?.month })
                 
-                groupedDict
-                    .sorted(by: { a, b in a.key! < b.key! })
-                    .forEach {
-                        print("-----🌞 \($0) 🌚-----")
-                        $0.value.forEach {
-                            print("\($0.dateAdded!.prettyMonth)")
-                        }
-                    }
+//                groupedDict
+//                    .sorted(by: { a, b in a.key! < b.key! })
+//                    .forEach {
+////                        print("-----🌞 \($0) 🌚-----")
+//                        $0.value.forEach {
+//                            print("\($0.dateAdded!.prettyMonth)")
+//                        }
+//                    }
             })
             //            .padding(.horizontal, 20)
             //            .background(Color(.clear))
@@ -492,9 +510,9 @@ struct ContentView: View {
     
     
     
-    private func addExpense(_ date : Date = Date()) {
+    private func addExpense(_ date : Date = Date(), int: Int) {
         cost = ""
-        expenseName = ""
+        expenseName = String(int)
 //        costEditProcessGoing = true
 //        expenceEditProcessGoing = true
         
@@ -512,7 +530,7 @@ struct ContentView: View {
                 // Replace this implementation with code to handle the error appropriately.
                 // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nsError = error as NSError
-                fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+                fatalError("🏃🏻‍♀️ Unresolved error \(nsError), \(nsError.userInfo)")
             }
             print("-----",expenses)
             
