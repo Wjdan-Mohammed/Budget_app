@@ -6,16 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct MyBudgetApp: App {
-    let persistenceController = PersistenceController.shared
-
-    @State var text = [Expense()]
+//    let persistenceController = PersistenceController.shared
+//
+//    @State var text = [Expense()]
+//    @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    let modelContainer: ModelContainer
+//        
+        init() {
+            do {
+                modelContainer = try ModelContainer(for:  FinancialData.self, NExpense.self)
+            } catch {
+                fatalError("Could not initialize ModelContainer")
+            }
+        }
     var body: some Scene {
         WindowGroup {
-            ContentView($text, onEditEnd: { print("New name is * ") })
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+//            if isOnboarding{
+//                IncomeOnboardingView()
+//                
+//            }
+//            else{
+                AddExpenseView()
+//                ExpensesView()
+//            }
+            
+//            ContentView($text, onEditEnd: { print("New name is * ") })
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
+        .modelContainer(for: NExpense.self)
     }
 }

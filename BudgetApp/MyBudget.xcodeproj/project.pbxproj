@@ -13,6 +13,12 @@
 		70167F652A236064009BA6B0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 70167F642A236064009BA6B0 /* Preview Assets.xcassets */; };
 		70167F672A236064009BA6B0 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70167F662A236064009BA6B0 /* Persistence.swift */; };
 		70167F6A2A236064009BA6B0 /* MyBudget.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 70167F682A236064009BA6B0 /* MyBudget.xcdatamodeld */; };
+		7017602C2B2DE82000187F6B /* IncomeOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7017602B2B2DE82000187F6B /* IncomeOnboardingView.swift */; };
+		7017602E2B2DE83200187F6B /* BudgetOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7017602D2B2DE83200187F6B /* BudgetOnboardingView.swift */; };
+		701760302B2DE86E00187F6B /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7017602F2B2DE86E00187F6B /* AddExpenseView.swift */; };
+		701760322B2DEA1000187F6B /* FinancialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760312B2DEA1000187F6B /* FinancialData.swift */; };
+		701760342B2E05A800187F6B /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760332B2E05A800187F6B /* Expense.swift */; };
+		701760362B2E19C500187F6B /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760352B2E19C500187F6B /* ExpensesView.swift */; };
 		70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */; };
 		70EEB8BF2A8803F500A19DF9 /* PlusJakartaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BD2A87FCA300A19DF9 /* PlusJakartaSans-Bold.ttf */; };
 		70EEB8C12A8803F500A19DF9 /* PlusJakartaSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */; };
@@ -27,6 +33,12 @@
 		70167F642A236064009BA6B0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		70167F662A236064009BA6B0 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		70167F692A236064009BA6B0 /* MyBudget.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MyBudget.xcdatamodel; sourceTree = "<group>"; };
+		7017602B2B2DE82000187F6B /* IncomeOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeOnboardingView.swift; sourceTree = "<group>"; };
+		7017602D2B2DE83200187F6B /* BudgetOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetOnboardingView.swift; sourceTree = "<group>"; };
+		7017602F2B2DE86E00187F6B /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		701760312B2DEA1000187F6B /* FinancialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialData.swift; sourceTree = "<group>"; };
+		701760332B2E05A800187F6B /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
+		701760352B2E19C500187F6B /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
 		70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewModel.swift; sourceTree = "<group>"; };
 		70EEB8BB2A87FCA300A19DF9 /* PlusJakartaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Regular.ttf"; sourceTree = "<group>"; };
 		70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -94,6 +106,8 @@
 		707D263B2A97973700BA5B6C /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				701760312B2DEA1000187F6B /* FinancialData.swift */,
+				701760332B2E05A800187F6B /* Expense.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -101,6 +115,10 @@
 		707D263C2A97974B00BA5B6C /* View */ = {
 			isa = PBXGroup;
 			children = (
+				7017602B2B2DE82000187F6B /* IncomeOnboardingView.swift */,
+				7017602D2B2DE83200187F6B /* BudgetOnboardingView.swift */,
+				7017602F2B2DE86E00187F6B /* AddExpenseView.swift */,
+				701760352B2E19C500187F6B /* ExpensesView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -187,10 +205,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				70167F672A236064009BA6B0 /* Persistence.swift in Sources */,
+				7017602E2B2DE83200187F6B /* BudgetOnboardingView.swift in Sources */,
 				70167F602A236063009BA6B0 /* ContentView.swift in Sources */,
+				701760302B2DE86E00187F6B /* AddExpenseView.swift in Sources */,
+				701760342B2E05A800187F6B /* Expense.swift in Sources */,
+				7017602C2B2DE82000187F6B /* IncomeOnboardingView.swift in Sources */,
 				70167F6A2A236064009BA6B0 /* MyBudget.xcdatamodeld in Sources */,
+				701760362B2E19C500187F6B /* ExpensesView.swift in Sources */,
 				70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */,
 				70167F5E2A236063009BA6B0 /* MyBudgetApp.swift in Sources */,
+				701760322B2DEA1000187F6B /* FinancialData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,7 +352,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -359,7 +383,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
