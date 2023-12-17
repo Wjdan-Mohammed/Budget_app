@@ -17,10 +17,9 @@ struct AddExpenseView: View {
     @State var cost = ""
     @State var isActive = false
     @State private var selectedEmoji: String = "💰"
-    let emojis: [String] = [
-        "💰", "🚗", "🏠", "🔌", "🛫", "📱", "🖥️", "🎮", "🍿", "🎧"
-        // ... add more emojis as needed
-    ]
+    let emojis: [String] = ["💰", "🚗", "🏠", "🔌", "🛫", "📱", "🖥️", "🎮", "🍿", "🎧"]
+    @AppStorage("isOnboarding") var isOnboarding: Bool?
+    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         NavigationStack {
@@ -34,61 +33,50 @@ struct AddExpenseView: View {
                     }
                     .pickerStyle(.menu)
                     TextField("Name", text: $name)
-                    TextField("Cose", text: $cost)
+                    TextField("Cost", text: $cost)
                 }
                 Button("add", action: addExpense)
                 
                 NavigationLink(destination: ExpensesView(), isActive: $isActive) {
                     Button(action: {
-                        isActive = true // Set isActive to trigger navigation
+                        if isOnboarding ?? true{
+                            isOnboarding = false
+                            
+                            isActive = true
+                        }
+                        else{
+                            self.presentationMode.wrappedValue.dismiss()
+                        }
                     }) {
                         Text("Done? Go next")
                     }
                 }
                 
                 
-//                List{
-                    ForEach(expenses){ expense in
-                        HStack{
-                            Text(expense.emoji)
-                            Text(expense.name)
-                            Spacer()
-                            Text(String(expense.cost))
-                            Text("SR")
-                            Button(action: {
-                                modelContext.delete(expense)
-                            }, label: {
-                                Image("Close Button").frame(width: 20,height: 20)
-                            })
-                        }
+                ForEach(expenses){ expense in
+                    HStack{
+                        Text(expense.emoji)
+                        Text(expense.name)
+                        Spacer()
+                        Text(String(expense.cost))
+                        Text("SR")
+                        Button(action: {
+                            modelContext.delete(expense)
+                        }, label: {
+                            Image("Close Button").frame(width: 20,height: 20)
+                        })
                     }
-//                    .onDelete(perform: { indexSet in
-//                        for i in indexSet{
-//                            let expense = expenses[i]
-//                            modelContext.delete(expense)
-//                        }
-//                    })
-//                }
-            }.onAppear(perform: {
+                }
+            }.padding().onAppear(perform: {
                 print(expenses)
             })
         }
     }
     
     func addExpense(){
-        //        print(expenses)
-        //        expense.cost = Double(cost) ?? 0
-        //        expense.name = nameee
-        //        cost = ""
-        //        nameee = ""
-        //        expenses.append(expense)
-        modelContext.insert(NExpense(name: name.isEmpty ? "name": name,amount: Double(cost) ?? 0,emoji: selectedEmoji))
+        modelContext.insert(NExpense(name: name.isEmpty ? "name": name,cost: Double(cost) ?? 0, StrAmountSpent: "0.0",emoji: selectedEmoji))
         cost = ""
         name = ""
-        //        modelContext.insert(expense)
-        //        print(expenses)
-        //        print(expenses.count)
-        
     }
 }
 

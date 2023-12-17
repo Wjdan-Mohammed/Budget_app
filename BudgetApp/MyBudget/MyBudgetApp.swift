@@ -13,7 +13,7 @@ struct MyBudgetApp: App {
 //    let persistenceController = PersistenceController.shared
 //
 //    @State var text = [Expense()]
-//    @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    @AppStorage("isOnboarding") var isOnboarding: Bool = true
     let modelContainer: ModelContainer
 //        
         init() {
@@ -25,18 +25,17 @@ struct MyBudgetApp: App {
         }
     var body: some Scene {
         WindowGroup {
-//            if isOnboarding{
-//                IncomeOnboardingView()
-//                
-//            }
-//            else{
-                AddExpenseView()
-//                ExpensesView()
-//            }
+            if isOnboarding{
+                IncomeOnboardingView()
+                
+            }
+            else{
+                ExpensesView()
+            }
             
 //            ContentView($text, onEditEnd: { print("New name is * ") })
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
-        .modelContainer(for: NExpense.self)
+        .modelContainer(for: [FinancialData.self, NExpense.self])
     }
 }
