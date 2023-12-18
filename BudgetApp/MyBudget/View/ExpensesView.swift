@@ -52,11 +52,13 @@ struct ExpensesView: View {
                                 ProgressView().progressViewStyle(.linear)
                                 Spacer()
                                 if expense.StrAmountSpent == "0" || expense.StrAmountSpent == "0.0"{
-                                    Text(String(expense.cost)).foregroundStyle(.red).font(.system(size: 12))
+                                    Text(String(expense.cost)).foregroundStyle(.gray).font(.system(size: 12))
                                 }
                                 else{
 //                                    if expense.cost != 0{
+//                                    if expense.cost > Double(expense.StrAmountSpent) ?? 0{
                                         Text(String(Int(expense.cost - (Double(expense.StrAmountSpent) ?? 0)))).foregroundStyle(.gray).font(.system(size: 12))
+//                                    }
 //                                    }
 //                                    else{
 //                                        Text(String(expense.cost)).foregroundStyle(.red)
@@ -66,20 +68,18 @@ struct ExpensesView: View {
                             }
                         }
                     }
+                    
+                    NavigationLink {
+                        AddExpenseView()
+                    } label: {
+                        HStack {
+                            Image("add button")
+                            Text("add new expenses").foregroundStyle(.gray)
+                        }
+                    }
                 }
                 .navigationDestination(for: NExpense.self, destination: EditExpenseView.init)
                 .listStyle(.inset)
-
-                NavigationLink {
-                    AddExpenseView()
-                } label: {
-                    HStack {
-                        Image("add button")
-                        Text("add new expenses").foregroundStyle(.gray)
-                    }
-                }
-
-                
                 
             }.navigationTitle(Date().prettyMonth)
                 .popover(isPresented: $isPopoverPresented, content: {
@@ -100,13 +100,33 @@ struct EditExpenseView: View {
     
     var body: some View {
         VStack{
-            HStack{
-                TextField("Name", text: $expense.name)
-            }
-            Text("How much did you spent?")
+//            HStack{
+//                TextField("Name", text: $expense.name)
+//            }
+            Text("How much did you spent?").fontWeight(.bold).padding(.bottom, 20)
             TextField("amount spent", text: $expense.StrAmountSpent)
+                .padding(.leading, 16)
+                .font(.system(size: 14))
+                .frame(width: UIScreen.main.bounds.width-40,height: 40)
+                .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
+                .clipShape(.rect(cornerRadius: 12))
+                .keyboardType(.numberPad)
+                .overlay(
+                    HStack {
+                        Spacer()
+//                        if !isEditing{
+                            Text("SR")
+                                .font(.system(size: 12))
+                                .foregroundColor(Color("placeholder"))
+                                .padding(.trailing, 14)
+//                        }
+                    }, alignment: .center
+                )
+            Spacer()
             
-        }.padding()
+        }
+        .padding()
+        .padding(.top, 60)
             .background(.clear)
     }
 }
