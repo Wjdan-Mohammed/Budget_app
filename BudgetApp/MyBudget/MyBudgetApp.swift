@@ -26,11 +26,11 @@ struct MyBudgetApp: App {
     var body: some Scene {
         WindowGroup {
             if isOnboarding{
-                IncomeOnboardingView()
+                IncomeOnboardingView().preferredColorScheme(.dark)
                 
             }
             else{
-                ExpensesView()
+                ExpensesView().preferredColorScheme(.dark)
             }
             
 //            ContentView($text, onEditEnd: { print("New name is * ") })
