@@ -20,6 +20,7 @@ struct AddExpenseView: View {
     @State var isActive = false
     @State private var selectedEmoji: String = "💰"
     @State private var isEditing = false
+    @State var inputValidationMsg = (false,"")
     let emojis: [String] = ["💰", "🚗", "🏠", "🔌", "🛫", "📱", "🖥️", "🎮", "🍿", "🎧"]
     @AppStorage("isOnboarding") var isOnboarding: Bool?
     @Environment(\.presentationMode) var presentationMode
@@ -45,10 +46,12 @@ struct AddExpenseView: View {
                     })
                         .padding(.leading, 16)
                         .font(.system(size: 14))
-                        .border(!nameEmpty ? Color.clear : Color.red, width: 1)
+//                        .border(!nameEmpty ? Color.clear : Color.red, width: 1)
                         .frame(width: UIScreen.main.bounds.width/2,height: 40)
                         .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                         .clipShape(.rect(cornerRadius: 12))
+//                        .border(Color.red, width: 2) // Add a red border with a width of 2 points
+//                        .cornerRadius(10)
                     
                     TextField("Cost", text: $cost, onEditingChanged: { editing in
                         self.isEditing = editing
@@ -56,7 +59,7 @@ struct AddExpenseView: View {
                     })
                     .padding(.leading, 16)
                     .font(.system(size: 14))
-                    .border(!costEmpty ? Color.clear : Color.red, width: 1)
+                    //.border(!costEmpty ? Color.clear : Color.red, width: 1)
                     .frame(width: UIScreen.main.bounds.width/5,height: 40)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                     .clipShape(.rect(cornerRadius: 12))
@@ -74,22 +77,40 @@ struct AddExpenseView: View {
                     )
                     
                 }
-                //                Button("add", action: addExpense)
+//                    if costEmpty&&nameEmpty{
+                    if inputValidationMsg.0{
+                        Text(inputValidationMsg.1).foregroundStyle(.red).font(.system(size: 14))
+                    }
+//                    }
+//                    else if nameEmpty{
+//                        Text("please write the expense name").foregroundStyle(.red).font(.system(size: 14))
+//                    }
+//                    else if costEmpty{
+//                        Text("please write the expense cost").foregroundStyle(.red).font(.system(size: 14))
+//                    }
                 Button{
                     if name.isEmpty && cost.isEmpty{
                          
                         nameEmpty = true
                         costEmpty = true
+                        inputValidationMsg.0 = true
+                        inputValidationMsg.1 = "please write the expense name and cost"
                     }
                     else if cost.isEmpty{
                        costEmpty = true
+                        inputValidationMsg.0 = true
+                        inputValidationMsg.1 = "please write the cost"
                    }
                     else if name.isEmpty{
                         nameEmpty = true
+                        inputValidationMsg.0 = true
+                        inputValidationMsg.1 = "please write the name"
                     }
                     
                     else{
+                        inputValidationMsg.0 = false
                         addExpense()
+                        
                         
                     }
                 }label: {
