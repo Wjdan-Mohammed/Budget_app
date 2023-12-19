@@ -15,6 +15,8 @@ struct AddExpenseView: View {
     @State var expense = NExpense()
     @State var name = ""
     @State var cost = ""
+    @State var nameEmpty = false
+    @State var costEmpty = false
     @State var isActive = false
     @State private var selectedEmoji: String = "💰"
     @State private var isEditing = false
@@ -38,18 +40,23 @@ struct AddExpenseView: View {
                     .frame(width: 60,height: 40)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                     .clipShape(.rect(cornerRadius: 12))
-                    TextField("Name", text: $name)
+                    TextField("Name", text: $name, onEditingChanged: { _ in
+                        nameEmpty = false
+                    })
                         .padding(.leading, 16)
                         .font(.system(size: 14))
+                        .border(!nameEmpty ? Color.clear : Color.red, width: 1)
                         .frame(width: UIScreen.main.bounds.width/2,height: 40)
                         .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                         .clipShape(.rect(cornerRadius: 12))
                     
                     TextField("Cost", text: $cost, onEditingChanged: { editing in
                         self.isEditing = editing
+                        costEmpty = false
                     })
                     .padding(.leading, 16)
                     .font(.system(size: 14))
+                    .border(!costEmpty ? Color.clear : Color.red, width: 1)
                     .frame(width: UIScreen.main.bounds.width/5,height: 40)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                     .clipShape(.rect(cornerRadius: 12))
@@ -69,8 +76,20 @@ struct AddExpenseView: View {
                 }
                 //                Button("add", action: addExpense)
                 Button{
-                    if !name.isEmpty{ addExpense() }
-                    else {
+                    if name.isEmpty && cost.isEmpty{
+                         
+                        nameEmpty = true
+                        costEmpty = true
+                    }
+                    else if cost.isEmpty{
+                       costEmpty = true
+                   }
+                    else if name.isEmpty{
+                        nameEmpty = true
+                    }
+                    
+                    else{
+                        addExpense()
                         
                     }
                 }label: {
@@ -128,6 +147,14 @@ struct AddExpenseView: View {
         modelContext.insert(NExpense(name: name.isEmpty ? "name": name,cost: Double(cost) ?? 0, StrAmountSpent: "0.0",emoji: selectedEmoji))
         cost = ""
         name = ""
+        var total = 0
+        for exp in expenses{
+            total += Int(exp.cost)
+        }
+        if let financialData = financialData.last{
+            financialData.remaining = Double(Int(financialData.budget) - total)
+            
+        }
     }
 }
 

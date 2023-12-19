@@ -23,6 +23,7 @@ struct BudgetOnboardingView: View {
                     .frame(height: 40)
                     .frame(width: UIScreen.main.bounds.width-40,height: 50)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
+                    .keyboardType(.numberPad)
                     .clipShape(.rect(cornerRadius: 12)).overlay(
                         HStack {
                             Spacer()

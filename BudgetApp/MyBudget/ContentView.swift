@@ -64,7 +64,7 @@ struct ContentView: View {
                             //                            Text("hi")
                             Text(exp.name!).onAppear(perform: {
                                 self.exp1 = exp
-                                print(exp.id)
+//                                print(exp.id)
                             })
                             
                             
@@ -538,13 +538,13 @@ struct ContentView: View {
         }
     }
     func fetchTools() {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Expense")
+//        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Expense")
 
-            do {
-                try viewContext.fetch(fetchRequest)
-            } catch let error {
-                print("Error fetching \(error)")
-            }
+//            do {
+////                try viewContext.fetch(fetchRequest)
+//            } catch let error {
+//                print("Error fetching \(error)")
+//            }
 
         }
     

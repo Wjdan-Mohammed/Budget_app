@@ -11,10 +11,10 @@ import SwiftData
 struct ExpensesView: View {
     @Environment(\.modelContext) var modelContext
     @Query var expenses : [NExpense]
+    @Query var financialData : [FinancialData]
     @State var isActive = false
     @State private var isPopoverPresented = false
-    @State var expense = NExpense()
-    
+    @State var expense = NExpense()    
     
     var body: some View {
         NavigationStack {
@@ -55,31 +55,28 @@ struct ExpensesView: View {
                                     Text(String(expense.cost)).foregroundStyle(.gray).font(.system(size: 12))
                                 }
                                 else{
-//                                    if expense.cost != 0{
-//                                    if expense.cost > Double(expense.StrAmountSpent) ?? 0{
                                         Text(String(Int(expense.cost - (Double(expense.StrAmountSpent) ?? 0)))).foregroundStyle(.gray).font(.system(size: 12))
-//                                    }
-//                                    }
-//                                    else{
-//                                        Text(String(expense.cost)).foregroundStyle(.red)
-//                                    }
                                 }
                                 Text("SR Left").foregroundStyle(.gray).font(.system(size: 12))
                             }
                         }
+                    }.listRowSeparator(.hidden)
+                    if let financialData = financialData.last {
+                        HStack{
+                            Text("\( financialData.remaining, specifier: "%.0f") is left out of \(financialData.budget, specifier: "%.0f")").foregroundStyle(.gray).font(.system(size: 14))
+                        }
                     }
-                    
                     NavigationLink {
                         AddExpenseView()
                     } label: {
                         HStack {
                             Image("add button")
-                            Text("add new expenses").foregroundStyle(.gray)
+                            Text("Add new expenses").foregroundStyle(.gray).font(.system(size: 14))
                         }
-                    }
+                    }.listRowSeparator(.hidden)
                 }
                 .navigationDestination(for: NExpense.self, destination: EditExpenseView.init)
-                .listStyle(.inset)
+                .listStyle(.plain)
                 
             }.navigationTitle(Date().prettyMonth)
                 .popover(isPresented: $isPopoverPresented, content: {
@@ -100,9 +97,6 @@ struct EditExpenseView: View {
     
     var body: some View {
         VStack{
-//            HStack{
-//                TextField("Name", text: $expense.name)
-//            }
             Text("How much did you spent?").fontWeight(.bold).padding(.bottom, 20)
             TextField("amount spent", text: $expense.StrAmountSpent)
                 .padding(.leading, 16)
@@ -114,12 +108,10 @@ struct EditExpenseView: View {
                 .overlay(
                     HStack {
                         Spacer()
-//                        if !isEditing{
                             Text("SR")
                                 .font(.system(size: 12))
                                 .foregroundColor(Color("placeholder"))
                                 .padding(.trailing, 14)
-//                        }
                     }, alignment: .center
                 )
             Spacer()
