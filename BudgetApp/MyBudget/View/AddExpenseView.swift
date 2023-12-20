@@ -46,12 +46,10 @@ struct AddExpenseView: View {
                     })
                         .padding(.leading, 16)
                         .font(.system(size: 14))
-//                        .border(!nameEmpty ? Color.clear : Color.red, width: 1)
                         .frame(width: UIScreen.main.bounds.width/2,height: 40)
                         .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                         .clipShape(.rect(cornerRadius: 12))
-//                        .border(Color.red, width: 2) // Add a red border with a width of 2 points
-//                        .cornerRadius(10)
+
                     
                     TextField("Cost", text: $cost, onEditingChanged: { editing in
                         self.isEditing = editing
@@ -59,7 +57,6 @@ struct AddExpenseView: View {
                     })
                     .padding(.leading, 16)
                     .font(.system(size: 14))
-                    //.border(!costEmpty ? Color.clear : Color.red, width: 1)
                     .frame(width: UIScreen.main.bounds.width/5,height: 40)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                     .clipShape(.rect(cornerRadius: 12))
@@ -147,11 +144,14 @@ struct AddExpenseView: View {
                         Text(expense.name)
                             .font(.system(size: 14))
                         Spacer()
-                        Text(String(expense.cost))
+                        Text(expense.cost)
                             .font(.system(size: 14))
                         Text("SR")
                             .font(.system(size: 14))
                         Button(action: {
+                            if let financialData = financialData.last{
+                                financialData.remaining += Double(expense.cost) ?? 0
+                            }
                             modelContext.delete(expense)
                         }, label: {
                             Image("Close Button").frame(width: 20,height: 20)
@@ -161,16 +161,26 @@ struct AddExpenseView: View {
                     .padding(.horizontal)
                 Spacer()
             }
-        }
+        }.onDisappear(perform: {
+            var total = 0
+            for exp in expenses{
+                total += Int(exp.StrAmountSpent) ?? 0
+            }
+            //            if let financialData = financialData.last{
+            financialData.last!.remaining = Double(Int(financialData.last!.budget) - total)
+            print(financialData.last!.remaining)
+            
+        })
     }
     
     func addExpense(){
-        modelContext.insert(NExpense(name: name.isEmpty ? "name": name,cost: Double(cost) ?? 0, StrAmountSpent: "0.0",emoji: selectedEmoji))
+       
+        modelContext.insert(NExpense(name: name.isEmpty ? "": name,cost: cost, StrAmountSpent: "",emoji: selectedEmoji))
         cost = ""
         name = ""
         var total = 0
         for exp in expenses{
-            total += Int(exp.cost)
+            total += Int(exp.StrAmountSpent) ?? 0
         }
         if let financialData = financialData.last{
             financialData.remaining = Double(Int(financialData.budget) - total)

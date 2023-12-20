@@ -12,13 +12,13 @@ import SwiftData
 class NExpense{
     
     var name : String
-    var cost : Double
+    var cost : String
     var amountSpent : Double
     var StrAmountSpent : String
     var dateAdded : Date
     var emoji : String
     
-    init(name: String = "name", cost: Double = 0, amountSpent: Double = 0, StrAmountSpent : String = "" , dateAdded: Date = .now, emoji : String = "💰") {
+    init(name: String = "", cost: String = "", amountSpent: Double = 0, StrAmountSpent : String = "" , dateAdded: Date = .now, emoji : String = "💰") {
         self.name = name
         self.cost = cost
         self.amountSpent = amountSpent
