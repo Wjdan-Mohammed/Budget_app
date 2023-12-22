@@ -50,13 +50,13 @@ struct IncomeOnboardingView: View {
                 Spacer()
             }.padding(.top, 60)
             .navigationDestination(isPresented: $isActive) {
-                BudgetOnboardingView(financialData: financialData.last ?? FinancialData())
+              //  BudgetOnboardingView(financialData: financialData.last ?? FinancialData())
             }
         }.padding()
     }
     
     func addIncome(){
-        modelContext.insert(FinancialData(income: Double(income) ?? 0.0))
+        modelContext.insert(FinancialData(income: Double(helper.convertToEnglish(from: income)) ?? 0.0))
     }
 }
 

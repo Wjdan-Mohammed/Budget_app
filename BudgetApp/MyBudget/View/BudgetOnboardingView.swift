@@ -6,25 +6,26 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BudgetOnboardingView: View {
     @Environment(\.modelContext) var modelContext
-    @Bindable var financialData : FinancialData
+    @Query var financialData : [FinancialData]
     @State var budget = ""
     @State var isActive = false
     
     var body: some View {
         NavigationStack{
             VStack{
-                Text("What is ur monthly budget?").fontWeight(.bold).padding(.bottom, 20)
+                Text("Set a monthly budget").fontWeight(.bold).padding(.bottom, 20)
                 TextField("Your budget", text: $budget)
                     .padding(.leading, 18)
                     .font(.system(size: 14))
                     .frame(height: 40)
-                    .frame(width: UIScreen.main.bounds.width-40,height: 50)
+                    .frame(width: UIScreen.main.bounds.width-40,height: 44)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1)))
                     .keyboardType(.numberPad)
-                    .clipShape(.rect(cornerRadius: 12)).overlay(
+                    .clipShape(.rect(cornerRadius: 10)).overlay(
                         HStack {
                             Spacer()
                             Text("SR")
@@ -46,21 +47,19 @@ struct BudgetOnboardingView: View {
                             .background(Color(.accent))
                             .cornerRadius(12)
                     }
-                    .padding(.top, 10)
-                        .padding()
                     
-                }.navigationDestination(isPresented: $isActive) {
+                        //.padding()
+                    
+                }.padding(.top, 20).navigationDestination(isPresented: $isActive) {
                     AddExpenseView()
                 }
                 Spacer()
-            }
-//            .padding(.top, 10)
-        }.padding()
+            }.padding(.top, 80).padding()
+        }
         
     }
     
     func addbudget(){
-        financialData.budget = Double(budget) ?? 0.00
-        print("✨✨✨",financialData.income,", ", financialData.budget)
+        modelContext.insert(FinancialData(budget: Double(helper.convertToEnglish(from: budget)) ?? 0.0))
     }
 }

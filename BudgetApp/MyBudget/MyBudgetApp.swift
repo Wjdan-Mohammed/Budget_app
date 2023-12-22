@@ -26,7 +26,7 @@ struct MyBudgetApp: App {
     var body: some Scene {
         WindowGroup {
             if isOnboarding{
-                IncomeOnboardingView().preferredColorScheme(.dark)
+                BudgetOnboardingView().preferredColorScheme(.dark)
                 
             }
             else{
