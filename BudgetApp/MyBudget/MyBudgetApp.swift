@@ -30,7 +30,7 @@ struct MyBudgetApp: App {
                 
             }
             else{
-                ExpensesView().preferredColorScheme(.dark)
+                ExpensesView( expenseToEdit: NExpense(name: " default"),  expenseToCheck: NExpense(name: "check default")).preferredColorScheme(.dark)
             }
             
 //            ContentView($text, onEditEnd: { print("New name is * ") })

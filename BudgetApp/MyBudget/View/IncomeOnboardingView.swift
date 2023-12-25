@@ -25,15 +25,15 @@ struct IncomeOnboardingView: View {
                     .frame(width: UIScreen.main.bounds.width-40,height: 50)
                     .background(Color(#colorLiteral(red: 0.1333329976, green: 0.1333335936, blue: 0.146202296, alpha: 1))).clipShape(.rect(cornerRadius: 12))
                     .keyboardType(.numberPad)
-                    .overlay(
-                    HStack {
-                        Spacer()
-                        Text("SR")
-                            .font(.system(size: 12))
-                            .foregroundColor(Color("placeholder"))
-                            .padding(.trailing, 20)
-                    }, alignment: .trailing
-                )
+//                    .overlay(
+//                    HStack {
+//                        Spacer()
+//                        Text("SR")
+//                            .font(.system(size: 12))
+//                            .foregroundColor(Color("placeholder"))
+//                            .padding(.trailing, 20)
+//                    }, alignment: .trailing
+//                )
             
            
                 Button{

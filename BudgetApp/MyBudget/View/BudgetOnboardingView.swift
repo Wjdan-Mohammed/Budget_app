@@ -35,26 +35,32 @@ struct BudgetOnboardingView: View {
                         }, alignment: .trailing
                     )
                 
-                VStack {
-                    Button{
-                        addbudget()
-                        isActive = true
-                    }label: {
-                        Text("Next")
-                            .font(.title3)
-                            .foregroundColor(.white)
-                            .frame(width: 170, height: 50)
-                            .background(Color(.accent))
-                            .cornerRadius(12)
-                    }
-                    
-                        //.padding()
-                    
-                }.padding(.top, 20).navigationDestination(isPresented: $isActive) {
+                    .navigationDestination(isPresented: $isActive) {
                     AddExpenseView()
                 }
                 Spacer()
-            }.padding(.top, 80).padding()
+            }.toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    VStack {
+                        Button{
+                            addbudget()
+                            isActive = true
+                        }label: {
+                            Text("Next")
+//                                .font(.title3)
+//                                .foregroundColor(.white)
+//                                .frame(width: 170, height: 50)
+//                                .background(Color(.accent))
+//                                .cornerRadius(12)
+                        }
+                        
+                            //.padding()
+                        
+                    }//.padding(.top, 20)
+                       
+                }
+            }
+            .padding(.top, 80).padding()
         }
         
     }

@@ -19,6 +19,9 @@
 		701760322B2DEA1000187F6B /* FinancialData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760312B2DEA1000187F6B /* FinancialData.swift */; };
 		701760342B2E05A800187F6B /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760332B2E05A800187F6B /* Expense.swift */; };
 		701760362B2E19C500187F6B /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701760352B2E19C500187F6B /* ExpensesView.swift */; };
+		707CB7092B39E40C0007E8FE /* EditBudgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CB7082B39E40C0007E8FE /* EditBudgetView.swift */; };
+		707CB70B2B39E46A0007E8FE /* CheckExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CB70A2B39E46A0007E8FE /* CheckExpenseView.swift */; };
+		707CB70D2B39E48D0007E8FE /* EditExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707CB70C2B39E48D0007E8FE /* EditExpenseView.swift */; };
 		70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */; };
 		70EEB8BF2A8803F500A19DF9 /* PlusJakartaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BD2A87FCA300A19DF9 /* PlusJakartaSans-Bold.ttf */; };
 		70EEB8C12A8803F500A19DF9 /* PlusJakartaSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */; };
@@ -39,6 +42,9 @@
 		701760312B2DEA1000187F6B /* FinancialData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinancialData.swift; sourceTree = "<group>"; };
 		701760332B2E05A800187F6B /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		701760352B2E19C500187F6B /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
+		707CB7082B39E40C0007E8FE /* EditBudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBudgetView.swift; sourceTree = "<group>"; };
+		707CB70A2B39E46A0007E8FE /* CheckExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckExpenseView.swift; sourceTree = "<group>"; };
+		707CB70C2B39E48D0007E8FE /* EditExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExpenseView.swift; sourceTree = "<group>"; };
 		70976FD42A9A6D780014EF3E /* ExpenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseViewModel.swift; sourceTree = "<group>"; };
 		70EEB8BB2A87FCA300A19DF9 /* PlusJakartaSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-Regular.ttf"; sourceTree = "<group>"; };
 		70EEB8BC2A87FCA300A19DF9 /* PlusJakartaSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PlusJakartaSans-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -119,6 +125,9 @@
 				7017602D2B2DE83200187F6B /* BudgetOnboardingView.swift */,
 				7017602F2B2DE86E00187F6B /* AddExpenseView.swift */,
 				701760352B2E19C500187F6B /* ExpensesView.swift */,
+				707CB7082B39E40C0007E8FE /* EditBudgetView.swift */,
+				707CB70A2B39E46A0007E8FE /* CheckExpenseView.swift */,
+				707CB70C2B39E48D0007E8FE /* EditExpenseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -147,6 +156,8 @@
 			dependencies = (
 			);
 			name = MyBudget;
+			packageProductDependencies = (
+			);
 			productName = MyBudget;
 			productReference = 70167F5A2A236063009BA6B0 /* MyBudget.app */;
 			productType = "com.apple.product-type.application";
@@ -175,6 +186,8 @@
 				Base,
 			);
 			mainGroup = 70167F512A236063009BA6B0;
+			packageReferences = (
+			);
 			productRefGroup = 70167F5B2A236063009BA6B0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -204,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				707CB70B2B39E46A0007E8FE /* CheckExpenseView.swift in Sources */,
 				70167F672A236064009BA6B0 /* Persistence.swift in Sources */,
 				7017602E2B2DE83200187F6B /* BudgetOnboardingView.swift in Sources */,
 				70167F602A236063009BA6B0 /* ContentView.swift in Sources */,
@@ -211,8 +225,10 @@
 				701760342B2E05A800187F6B /* Expense.swift in Sources */,
 				7017602C2B2DE82000187F6B /* IncomeOnboardingView.swift in Sources */,
 				70167F6A2A236064009BA6B0 /* MyBudget.xcdatamodeld in Sources */,
+				707CB7092B39E40C0007E8FE /* EditBudgetView.swift in Sources */,
 				701760362B2E19C500187F6B /* ExpensesView.swift in Sources */,
 				70976FD52A9A6D780014EF3E /* ExpenseViewModel.swift in Sources */,
+				707CB70D2B39E48D0007E8FE /* EditExpenseView.swift in Sources */,
 				70167F5E2A236063009BA6B0 /* MyBudgetApp.swift in Sources */,
 				701760322B2DEA1000187F6B /* FinancialData.swift in Sources */,
 			);
