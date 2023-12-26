@@ -129,7 +129,7 @@ struct AddExpenseView: View {
                         }
                         
                         
-                    }
+                    } .padding(.bottom, 40)
                     //                    if costEmpty&&nameEmpty{
                     if inputValidationMsg.0{
                         Text(inputValidationMsg.1).foregroundStyle(.red).font(.system(size: 14))
@@ -193,7 +193,7 @@ struct AddExpenseView: View {
                             }).padding(.leading,16)
                         }.frame(alignment: .leading)
                     }.padding(.vertical, 10)
-                        .padding(.top, 40)
+                       
                     // .padding(.horizontal)
                     Spacer()
                 }

@@ -39,7 +39,7 @@ struct ExpensesView: View {
                         
                         if financialData.spendingStatus == "Over budget"{
                             VStack(alignment: .leading){
-                                ProgressView(value: financialData.total, total: financialData.budget).tint(.red).progressViewStyle(.linear)
+                                ProgressView(value: max(financialData.total, financialData.budget), total: financialData.budget).tint(.red).progressViewStyle(.linear)
                                 HStack(spacing: 4){
                                     //                                    Image(systemName: "arrowtriangle.up.fill").foregroundStyle(Color.red) // Apply the desired color
                                     //                                        .font(.system(size: 10))
@@ -185,9 +185,7 @@ struct ExpensesView: View {
                         .swipeActions(content: {
                             
                             Button {
-                                print("🐙", expenseToEdit?.name)
                                 expenseToEdit = expense
-                                print("🐙🐙", expenseToEdit?.name)
                                 print(expense.name)
                                 
                                 DispatchQueue.main.asyncAfter(deadline: .now() ) {

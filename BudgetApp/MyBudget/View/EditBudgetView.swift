@@ -13,6 +13,7 @@ struct EditBudgetView : View{
     @State var textBudget = ""
     @Environment(\.modelContext) var modelContext
     @Query var financialData : [FinancialData]
+    @Query var expenses : [NExpense]
     var body: some View {
         
         NavigationStack{
@@ -34,8 +35,35 @@ struct EditBudgetView : View{
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        financialData.last!.budget = Double(helper.convertToEnglish(from: textBudget)) ?? 0
                         
+                        financialData.last!.budget = Double(helper.convertToEnglish(from: textBudget)) ?? 0
+                        financialData.last!.total = 0
+                        for exp in expenses{
+                            if exp.StrAmountSpent != "0" && exp.StrAmountSpent != "0.0"{
+                                financialData.last!.total += Double(exp.StrAmountSpent) ?? 0
+                            }
+                        }
+                        //                if text != "0" && text != "0.0" && text != "00"{
+                        //                    financialData.last!.total += Double(expense.StrAmountSpent) ?? 0
+                        //                }
+                        //                }
+                        print("🌚", financialData.last!.total)
+                        //            if let financialData = financialData.last{
+                        financialData.last!.remaining = Double(financialData.last!.budget - financialData.last!.total)
+                        print(financialData.last!.remaining)
+                        
+                        if financialData.last!.total > financialData.last!.budget {
+                            financialData.last!.spendingStatus = "Over budget"
+                            print("Over budget")
+                        }
+                        else if financialData.last!.total < financialData.last!.budget{
+                            financialData.last!.spendingStatus = "Under budget"
+                            print("Under budget")
+                        }
+                        else if financialData.last!.total == financialData.last!.budget{
+                            financialData.last!.spendingStatus = "On budget"
+                            print("On budget")
+                        }
                         
                         dismiss()
                     }
